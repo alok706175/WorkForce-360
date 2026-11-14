@@ -121,27 +121,32 @@ cd "WorkForce 360"
 
 ### Step 2: Run the Backend (Spring Boot)
 
-#### Option A: Run with H2 In-Memory DB (Zero Setup, Instant Start)
-```bash
-cd backend
-mvn spring-boot:run -Dspring-boot.run.profiles=h2
-```
-*The server will start on port `8080` with H2 console available at `http://localhost:8080/h2-console`.*
+#### Option A: Run with PostgreSQL (Recommended)
+1. Ensure your local PostgreSQL service is running on port `5432` (or use cloud PostgreSQL like Render, Supabase, Neon).
+2. Create a database named `workforce360` in pgAdmin or psql:
+   ```sql
+   CREATE DATABASE workforce360;
+   ```
+3. Set your credentials in `backend/src/main/resources/application-postgres.properties` (or set environment variables `DB_USERNAME`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`, `DB_NAME`).
+4. Run:
+   ```bash
+   cd backend
+   .\mvnw spring-boot:run
+   ```
 
 #### Option B: Run with MySQL (MySQL Workbench)
 1. Ensure your local MySQL server is running (default port `3306`).
-2. Update `backend/src/main/resources/application-mysql.properties` or set environment variables:
+2. Run:
    ```bash
-   export DB_HOST=localhost
-   export DB_PORT=3306
-   export DB_NAME=workforce360
-   export DB_USERNAME=root
-   export DB_PASSWORD=your_password
+   cd backend
+   .\mvnw spring-boot:run "-Dspring-boot.run.profiles=mysql"
    ```
-3. Run:
-   ```bash
-   mvn spring-boot:run -Dspring-boot.run.profiles=mysql
-   ```
+
+#### Option C: Run with H2 In-Memory DB (Zero Setup, Instant Test)
+```bash
+cd backend
+.\mvnw spring-boot:run "-Dspring-boot.run.profiles=h2"
+```
 
 ### Step 3: Run the Frontend (React + Vite)
 In a separate terminal:
